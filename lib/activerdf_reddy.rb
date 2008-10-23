@@ -14,14 +14,18 @@ class ReddyAdapter < RDFLite
   def fetch(uri)
     # check if uri starts with http://
     return unless uri.match(/http:\/\/(.*)/)
-
+    
     $activerdflog.debug "fetching from #{uri}"
-
+    
     url = URI.parse(uri)
-    Net::HTTP.start(url.host, url.port) do |http|
-      response = http.get(url.path, 'Accept' => 'application/rdf+xml')
-      parser = Rena::RdfXmlParser.new(response.body, uri)
+    found = false 
+    until found 
+      host, port = url.host, url.port if url.host && url.port 
+      req = Net::HTTP::Get.new(url.path) 
+      res = Net::HTTP.start(host, port) {|http| http.request(req) }
+      res.header['location'] ? url = URI.parse(res.header['location']) : found = true
     end
+    parser = Rena::RdfXmlParser.new(res.body, uri)
     triples = parser.graph.triples.map { |t| t.to_ntriples }
     
     # TODO: make this generic
