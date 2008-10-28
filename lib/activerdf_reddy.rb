@@ -19,9 +19,10 @@ class ReddyAdapter < RDFLite
     
     url = URI.parse(uri)
     found = false 
-    until found 
-      host, port = url.host, url.port if url.host && url.port 
-      req = Net::HTTP::Get.new(url.path, 'Accept' => 'application/rdf+xml') 
+    until found
+      host, port = url.host, url.port if url.host && url.port
+      path = url.query.nil? ? url.path : "#{url.path}?#{url.query}"
+      req = Net::HTTP::Get.new(path, 'Accept' => 'application/rdf+xml') 
       res = Net::HTTP.start(host, port) {|http| http.request(req) }
       res.header['location'] ? url = URI.parse(res.header['location']) : found = true
     end
