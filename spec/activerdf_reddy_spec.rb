@@ -17,27 +17,11 @@ describe ReddyAdapter do
     it "should have added some triples" do
       @adapter.should have_at_least(1).items
     end
-  end
-  
-  # Reddy doesn't support DBPedia RDF yet
-  describe 'fetching DBPedia Resource' do
-    # before(:each) do
-    #   @adapter.fetch('http://dbpedia.org/resource/Geogaddi')
-    # end
-
-    it "should have added some triples" # do
-    #       @adapter.should have_at_least(1).items
-    #     end
-  end
-
-  # Reddy doesn't support music ontology rdf yet
-  describe 'fetching Music Ontology' do
-    # before(:each) do
-    #   @adapter.fetch('http://purl.org/ontology/mo/')
-    # end
-
-    it "should have added some triples" # do
-     #      @adapter.should have_at_least(1).items
-     #    end                                
+    
+    it "should have set the namespaces" do
+      @adapter.namespaces['rdf'].should == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+      @adapter.namespaces['rdfs'].should == 'http://www.w3.org/2000/01/rdf-schema#'
+      @adapter.namespaces['dc'].should == 'http://purl.org/dc/elements/1.1/'
+    end
   end
 end

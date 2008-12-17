@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.test_files = ["spec/activerdf_reddy_spec.rb"]
   #s.rdoc_options = ["--main", "README.txt"]
   #s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.txt"]
-  s.add_dependency("metade-rena")
+  s.add_dependency("reddy")
   s.add_dependency("activerdf")  
   s.add_dependency("activerdf_rdflite")  
 end

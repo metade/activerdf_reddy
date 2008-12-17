@@ -1,6 +1,6 @@
 == activerdf_reddy
 
-An ActiveRDF using Reddy (http://github.com/tommorris/reddy) for parsing RDF-XML and N3.
+An ActiveRDF adapter that uses Reddy (http://github.com/tommorris/reddy) for parsing RDF-XML.
 
 * http://github.com/metade/activerdf_reddy
 

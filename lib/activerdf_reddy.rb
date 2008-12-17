@@ -1,6 +1,6 @@
 require 'rubygems'
-require 'rena'
 require 'active_rdf'
+require 'reddy'
 
 class ReddyAdapter < RDFLite
   attr_reader :namespaces
@@ -26,12 +26,11 @@ class ReddyAdapter < RDFLite
       res = Net::HTTP.start(host, port) {|http| http.request(req) }
       res.header['location'] ? url = URI.parse(res.header['location']) : found = true
     end
-    parser = Rena::RdfXmlParser.new(res.body, uri)
-    triples = parser.graph.triples.map { |t| t.to_ntriples }
     
     # TODO: make this generic
-    ns = parser.xml.root.elements[1].namespaces
-    @namespaces.merge!(ns)
+    parser = Reddy::RdfXmlParser.new(res.body, uri)
+    triples = parser.graph.triples.map { |t| t.to_ntriples }
+    parser.xml.root.namespace.each { |n| @namespaces[n.prefix] = n.href }
     
     context = RDFS::Resource.new(uri)
     add_ntriples(triples, context)
